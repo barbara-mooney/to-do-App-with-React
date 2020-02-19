@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import ViewPanel from './ViewPanel';
+import ListPanel from './ListPanel';
 
 class App extends Component {
   constructor (props) {
     super(props);
     const toDoCounter = 1;
     this.state = {
+      todoKey: '',
       newTodo: '',
-      priorityLevel: '',
+      priority: '',
       completed: false,
       listofTodos: [],
       toDoCounter: toDoCounter,
@@ -15,9 +16,11 @@ class App extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.addTodo = this.addTodo.bind(this);
     this.completeTodo = this.completeTodo.bind(this);
-    this.editTodo = this.editTodo.bind(this);
+    // this.editTodo = this.editTodo.bind(this);
     this.saveTodo = this.saveTodo.bind(this);
     // this.deleteTodo = this.deleteTodo.bind(this);
+    // this.setColor = this.setColor.bind(this);
+    // this.viewpanel = this.viewpanel.bind(this);
   }
 
 handleInputChange(event) {
@@ -27,15 +30,15 @@ handleInputChange(event) {
     });
   }
 addTodo (event) {  
-  const nextId = this.state.doToCounter + 1;
+  const nextId = this.state.toDoCounter + 1;
   const todo = this.state.newTodo;
-  const priorityLevel = this.state.priorityLevel;
-  const completed = this.state.completed;
+  const priorityLevel = this.state.priority;
+  const todoCompleted = this.state.completed;
   const newTodoToadd = {
     todoKey: nextId,
     newTodo: todo,
     priority: priorityLevel,
-    completed: completed,
+    completed: todoCompleted,
   }
   this.setState ({
     listofTodos: this.state.listofTodos.concat([newTodoToadd]),
@@ -47,36 +50,36 @@ completeTodo (event) {
     [event.target.name]: event.target.value
   })
 }
-editTodo(event) {
-  
-  return (
-    <div>
-    <div className="card-body">
-      <div className="form-group">
-        <label for="exampleFormControlTextarea1">Description</label>
-        <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"
-        name="newTodo" key={item.todoKey} onChange={this.handleInputChange}>{this.listofTodos.todoItem}</textarea>
-      </div>
-    </div>
-    <div className="card-body">
-      <label for="exampleFormControlSelect1">Priority</label>
-      <select className="form-control" id="exampleFormControlSelect1" name="priorityLevel" key={item.todoKey} onChange={this.handleInputChange}>
-        <option>Select a priority</option>
-        <option>Low priority</option>
-        <option>Medium priority</option>
-        <option>High priority</option>
-      </select>
-    </div>
-    <div className="card-footer text-muted">
-      <button 
-            type="button" 
-            className="btn btn-success btn-block"   
-            name="addTodo"
-            onClick={this.saveTodo}>Save</button>
-    </div>
-  </div>
-  )
-}
+// editTodo(event) {
+//     return (
+//       <div>
+//       <div className="card-body">
+//         <div className="form-group">
+//           <label for="exampleFormControlTextarea1">Description</label>
+//           <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"
+//           name="newTodo" key={item.todoKey} onChange={this.handleInputChange}>{this.listofTodos.todoItem}</textarea>
+//         </div>
+//       </div>
+//       <div className="card-body">
+//         <label for="exampleFormControlSelect1">Priority</label>
+//         <select className="form-control" id="exampleFormControlSelect1" name="priorityLevel" key={item.todoKey} onChange={this.handleInputChange}>
+//           <option>Select a priority</option>
+//           <option>Low priority</option>
+//           <option>Medium priority</option>
+//           <option>High priority</option>
+//         </select>
+//       </div>
+//       <div className="card-footer text-muted">
+//         <button 
+//               type="button" 
+//               className="btn btn-success btn-block"   
+//               name="addTodo"
+//               onClick={this.saveTodo}>Save</button>
+//       </div>
+//     </div>
+//     )
+//   }
+// }
 saveTodo (event) {  
   this.state.listofTodos.map(item => (
     <ViewPanel
@@ -88,8 +91,40 @@ saveTodo (event) {
   ))  
 }
 
+// ViewPanel () {
+//   console.log('inside viewpanel message');
+//   let display;
+//   if (this.state.listofTodos.length == 0) {
+//     display = <div className="card-body">Welcome to Very Simple To-Do App! Get started now by adding a new to-do on the left.</div>
+//   } else {
+//     display = <div>{this.state.listofTodos.map(item => (
+//         <ListPanel
+//           todoKey={item.todoKey}
+//           todoItem={item.todoItem}
+//           priorityLevel={item.priorityLevel}
+//           completed={item.completed}
+//           />
+//       ))
+//     } </div>
+//   }
+//   return <div>{ display }</div>
+// }
 
   render() {
+    let display;
+    if (this.state.listofTodos.length == 0) {
+      display = <div className="card-body">Welcome to Very Simple To-Do App! Get started now by adding a new to-do on the left.</div>
+    } else {
+      display = <div>{this.state.listofTodos.map(item => (
+          <ListPanel
+            todoKey={item.todoKey}
+            todoItem={item.todoItem}
+            priorityLevel={item.priorityLevel}
+            completed={item.completed}
+            />
+        ))
+      } </div>
+    }
     return (
       <div>
         <div className='container'>
@@ -135,16 +170,10 @@ saveTodo (event) {
                 <div className="card-header">
                   View To-Dos
                 </div>
-                {
-                  this.state.listofTodos.map(item => (
-                    <ViewPanel
-                      todoKey={item.todoKey}
-                      todoItem={item.todoItem}
-                      priorityLevel={item.priorityLevel}
-                      completed={item.completed}
-                      />
-                  ))
-                }  
+                <div>
+                    {/* {this.ViewPanel()} */}
+                    {display}
+                </div>
               </div>
             </div>
           </div>
