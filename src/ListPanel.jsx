@@ -1,19 +1,40 @@
 import React, { Component } from 'react';
 
-export default props => (
+
+function ListPanel(props) {
+       
+    const colorWatch = (priority) => {
+        if (priority == 'Low') {
+            return "list-group-item-success"
+        } else {
+            if (priority == 'Medium') {
+                return "list-group-item-warning"
+            } else {
+                if (priority == 'High') {
+                    return "list-group-item-danger"
+            }
+            }
+    } 
+    } 
+    
+    return (
         <div>        
             <ul className="list-group">
-                <li className="list-group-item"><span><input type="checkbox" aria-label="Checkbox for following text input" onClick={props.completeTodo}/></span>{props.todoItem}<span className="badge badge-primary badge-pill">EDIT</span><span className="badge badge-primary badge-pill">DELETE</span></li>
+                <li className={ `list-group-item 
+                ${colorWatch(props.priority)} `} style={{
+                    textDecoration: props.completed
+                      ? "line-through"
+                      : ""}} >
+                    <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input" onClick={() => props.complete(props.id)} />
+                    </span>
+                    {props.newTodo}
+                    <span className="badge badge-primary badge-pill" onClick={() => props.edit(props.id)}>EDIT</span>
+                    <span className="badge badge-primary badge-pill" onClick={() => props.delete(props.id)}>DELETE</span>
+                </li>
             </ul>
         </div>
-)
-
-        
+)}
 
 
-/* <ul class="list-group">
-  <li class="list-group-item">Dapibus ac facilisis in</li>
-  <li class="list-group-item list-group-item-success">A simple success list group item</li>
-  <li class="list-group-item list-group-item-danger">A simple danger list group item</li>
-  <li class="list-group-item list-group-item-warning">A simple warning list group item</li>
-</ul> */
+export default ListPanel;

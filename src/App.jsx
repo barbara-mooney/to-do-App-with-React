@@ -1,26 +1,23 @@
 import React, { Component } from 'react';
 import ListPanel from './ListPanel';
+import Edit from './Edit';
 
 class App extends Component {
   constructor (props) {
     super(props);
-    const toDoCounter = 1;
     this.state = {
-      todoKey: '',
+      key: '',
       newTodo: '',
       priority: '',
       completed: false,
       listofTodos: [],
-      toDoCounter: toDoCounter,
     }
     this.handleInputChange = this.handleInputChange.bind(this);
     this.addTodo = this.addTodo.bind(this);
-    this.completeTodo = this.completeTodo.bind(this);
-    // this.editTodo = this.editTodo.bind(this);
-    this.saveTodo = this.saveTodo.bind(this);
-    // this.deleteTodo = this.deleteTodo.bind(this);
-    // this.setColor = this.setColor.bind(this);
-    // this.viewpanel = this.viewpanel.bind(this);
+    this.complete = this.complete.bind(this);
+    this.edit = this.edit.bind(this);
+    this.save = this.save.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
 handleInputChange(event) {
@@ -29,101 +26,116 @@ handleInputChange(event) {
     [event.target.name]: event.target.value 
     });
   }
-addTodo (event) {  
-  const nextId = this.state.toDoCounter + 1;
+
+addTodo (event) {
+  event.preventDefault()
   const todo = this.state.newTodo;
   const priorityLevel = this.state.priority;
   const todoCompleted = this.state.completed;
   const newTodoToadd = {
-    todoKey: nextId,
+    key: Date.now() + Math.random(),
     newTodo: todo,
     priority: priorityLevel,
     completed: todoCompleted,
+    isBeingEdited: false,
   }
   this.setState ({
     listofTodos: this.state.listofTodos.concat([newTodoToadd]),
-    toDoCounter: nextId,
+    newTodo: '',
+    priority: ''
+
   });
 }
-completeTodo (event) {
-  this.setState({
-    [event.target.name]: event.target.value
-  })
+
+complete (key) {
+  let tempList = this.state.listofTodos
+  tempList.forEach((item) => {
+    if (key==item.key) {
+      if (item.completed == false) {
+        item.completed = true
+      } else {
+        item.completed = false
+      }
+    }
+    this.setState ({
+      listofTodos: tempList
+    })
+})
 }
-// editTodo(event) {
-//     return (
-//       <div>
-//       <div className="card-body">
-//         <div className="form-group">
-//           <label for="exampleFormControlTextarea1">Description</label>
-//           <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"
-//           name="newTodo" key={item.todoKey} onChange={this.handleInputChange}>{this.listofTodos.todoItem}</textarea>
-//         </div>
-//       </div>
-//       <div className="card-body">
-//         <label for="exampleFormControlSelect1">Priority</label>
-//         <select className="form-control" id="exampleFormControlSelect1" name="priorityLevel" key={item.todoKey} onChange={this.handleInputChange}>
-//           <option>Select a priority</option>
-//           <option>Low priority</option>
-//           <option>Medium priority</option>
-//           <option>High priority</option>
-//         </select>
-//       </div>
-//       <div className="card-footer text-muted">
-//         <button 
-//               type="button" 
-//               className="btn btn-success btn-block"   
-//               name="addTodo"
-//               onClick={this.saveTodo}>Save</button>
-//       </div>
-//     </div>
-//     )
-//   }
-// }
-saveTodo (event) {  
-  this.state.listofTodos.map(item => (
-    <ViewPanel
-      todoKey={item.todoKey}
-      todoItem={item.todoItem}
-      priorityLevel={item.priorityLevel}
-      completed={item.completed}
-      />
-  ))  
+edit (key) {
+  let tempList = this.state.listofTodos
+  tempList.forEach((item) => {
+    if (key==item.key) {
+      item.isBeingEdited = true;
+    }
+    this.setState ({
+      listofTodos: tempList
+    })
+})
 }
 
-// ViewPanel () {
-//   console.log('inside viewpanel message');
-//   let display;
-//   if (this.state.listofTodos.length == 0) {
-//     display = <div className="card-body">Welcome to Very Simple To-Do App! Get started now by adding a new to-do on the left.</div>
-//   } else {
-//     display = <div>{this.state.listofTodos.map(item => (
-//         <ListPanel
-//           todoKey={item.todoKey}
-//           todoItem={item.todoItem}
-//           priorityLevel={item.priorityLevel}
-//           completed={item.completed}
-//           />
-//       ))
-//     } </div>
-//   }
-//   return <div>{ display }</div>
-// }
+delete (key) {
+  let tempList = this.state.listofTodos.filter(item => {
+    return item.key != key
+    })
+    this.setState ({
+      listofTodos: tempList
+    })
+}
+
+
+save (title, priority, key) {  
+  console.log(title)
+  let tempList = this.state.listofTodos
+  
+  tempList.forEach((item) => {
+    if (key==item.key) {
+      item.newTodo = title;
+      item.priority = priority;
+      item.isBeingEdited = false;
+    }
+    this.setState ({
+      listofTodos: tempList
+    })
+})
+}
 
   render() {
     let display;
     if (this.state.listofTodos.length == 0) {
       display = <div className="card-body">Welcome to Very Simple To-Do App! Get started now by adding a new to-do on the left.</div>
     } else {
-      display = <div>{this.state.listofTodos.map(item => (
-          <ListPanel
-            todoKey={item.todoKey}
-            todoItem={item.todoItem}
-            priorityLevel={item.priorityLevel}
-            completed={item.completed}
-            />
-        ))
-      } </div>
+      display = <div>
+        {this.state.listofTodos.map((item) => {
+          if (item.isBeingEdited == false) {
+            return (
+              <div>
+                <ListPanel
+                key={item.key}
+                id={item.key}
+                newTodo={item.newTodo}
+                priority={item.priority}
+                completed={item.completed}
+                edit={this.edit}
+                delete={this.delete}
+                complete={this.complete}
+                />
+              </div>
+            )     
+          } else {
+            return (
+              <div>
+                <Edit 
+                save={this.save}
+                key={item.key}
+                id={item.key}
+                title={item.newTodo}
+                />
+              </div>
+            )
+          }
+        })}
+      </div>
     }
     return (
       <div>
@@ -136,24 +148,24 @@ saveTodo (event) {
           <div className="row">
             <div className="col-4">
               <div className="card">
-                <div className="card-header">
+                <div className="card-header" id="userInputs">
                   Add New To-do
                 </div>
                 <div className="card-body">
                   <div className="form-group">
-                    <label for="exampleFormControlTextarea1">I want to...</label>
+                    <label htmlFor="exampleFormControlTextarea1">I want to...</label>
                     <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"
                     name="newTodo"
                     onChange={this.handleInputChange}></textarea>
                   </div>
                 </div>
                 <div className="card-body">
-                  <label for="exampleFormControlSelect1">How much of a priority is this?</label>
-                  <select className="form-control" id="exampleFormControlSelect1" name="priorityLevel" onChange={this.handleInputChange}>
+                  <label htmlFor="exampleFormControlSelect1">How much of a priority is this?</label>
+                  <select className="form-control" id="exampleFormControlSelect1" name="priority" onChange={this.handleInputChange}>
                     <option>Select a priority</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
                   </select>
                 </div>
                 <div className="card-footer text-muted">
@@ -171,7 +183,6 @@ saveTodo (event) {
                   View To-Dos
                 </div>
                 <div>
-                    {/* {this.ViewPanel()} */}
                     {display}
                 </div>
               </div>
