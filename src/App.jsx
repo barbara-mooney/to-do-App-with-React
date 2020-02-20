@@ -41,9 +41,6 @@ addTodo (event) {
   }
   this.setState ({
     listofTodos: this.state.listofTodos.concat([newTodoToadd]),
-    newTodo: '',
-    priority: ''
-
   });
 }
 
@@ -103,7 +100,8 @@ save (title, priority, key) {
   render() {
     let display;
     if (this.state.listofTodos.length == 0) {
-      display = <div className="card-body">Welcome to Very Simple To-Do App! Get started now by adding a new to-do on the left.</div>
+      display = <div className="card-body welcomeMsn"><p className="boldText ">Welcome to Very Simple To-Do App!</p>
+      <p>Get started now by adding a new to-do on the left.</p></div>
     } else {
       display = <div>
         {this.state.listofTodos.map((item) => {
@@ -140,8 +138,8 @@ save (title, priority, key) {
     return (
       <div>
         <div className='container'>
-          <h1>Very Simple To-Do App</h1>
-          <h3>Track all of the things</h3>
+          <h2 className="white">Very Simple To-Do App</h2>
+          <h4 className="white">Track all of the things</h4>
           <hr size="15px" />
           <br/>
           <div style={{display: 'flex'}}>
@@ -153,19 +151,19 @@ save (title, priority, key) {
                 </div>
                 <div className="card-body">
                   <div className="form-group">
-                    <label htmlFor="exampleFormControlTextarea1">I want to...</label>
+                    <label htmlFor="exampleFormControlTextarea1" className="boldText">I want to...</label>
                     <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"
                     name="newTodo"
                     onChange={this.handleInputChange}></textarea>
                   </div>
                 </div>
                 <div className="card-body">
-                  <label htmlFor="exampleFormControlSelect1">How much of a priority is this?</label>
+                  <label htmlFor="exampleFormControlSelect1" className="boldText">How much of a priority is this?</label>
                   <select className="form-control" id="exampleFormControlSelect1" name="priority" onChange={this.handleInputChange}>
                     <option>Select a priority</option>
-                    <option>Low</option>
-                    <option>Medium</option>
-                    <option>High</option>
+                    <option>Low Priority</option>
+                    <option>Medium Priority</option>
+                    <option>High Priority</option>
                   </select>
                 </div>
                 <div className="card-footer text-muted">

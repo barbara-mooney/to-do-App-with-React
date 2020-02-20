@@ -19,21 +19,21 @@ handleInputChange(event) {
 
 render() {
     return (
-    <div className="Col-8">
+    <div className="Col-8 editPanel">
       <div className="card-body">
         <div className="form-group">
-          <label for="exampleFormControlTextarea1">Description</label>
+          <label for="exampleFormControlTextarea1" className="boldText">Description</label>
           <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"
           name="title" key={this.props.id} onChange={this.handleInputChange}value={this.state.title}></textarea>
         </div>
       </div>
       <div className="card-body">
-        <label for="exampleFormControlSelect1">Priority</label>
+        <label for="exampleFormControlSelect1" className="boldText">Priority</label>
         <select className="form-control" id="exampleFormControlSelect1" name="priority" key={this.props.id} onChange={this.handleInputChange} value={this.state.priority}>
           <option>Select a priority</option>
-          <option>Low</option>
-          <option>Medium</option>
-          <option>High</option>
+          <option>Low Priority</option>
+          <option>Medium Priority</option>
+          <option>High Priority</option>
         </select>
       </div>
       <div className="card-footer text-muted">
