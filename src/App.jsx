@@ -41,6 +41,8 @@ addTodo (event) {
   }
   this.setState ({
     listofTodos: this.state.listofTodos.concat([newTodoToadd]),
+    newTodo: '',
+    priority:'',
   });
 }
 
@@ -142,8 +144,8 @@ save (title, priority, key) {
           <h4 className="white">Track all of the things</h4>
           <hr size="15px" />
           <br/>
-          <div style={{display: 'flex'}}>
-          <div className="row">
+          <div>
+          <div className="row" width="100%">
             <div className="col-4">
               <div className="card">
                 <div className="card-header" id="userInputs">
@@ -153,13 +155,13 @@ save (title, priority, key) {
                   <div className="form-group">
                     <label htmlFor="exampleFormControlTextarea1" className="boldText">I want to...</label>
                     <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"
-                    name="newTodo"
+                    name="newTodo" value={this.state.newTodo}
                     onChange={this.handleInputChange}></textarea>
                   </div>
                 </div>
                 <div className="card-body">
                   <label htmlFor="exampleFormControlSelect1" className="boldText">How much of a priority is this?</label>
-                  <select className="form-control" id="exampleFormControlSelect1" name="priority" onChange={this.handleInputChange}>
+                  <select className="form-control" id="exampleFormControlSelect1" name="priority" value={this.state.priority} onChange={this.handleInputChange}>
                     <option>Select a priority</option>
                     <option>Low Priority</option>
                     <option>Medium Priority</option>
