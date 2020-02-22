@@ -5,13 +5,13 @@ function ListPanel(props) {
        
     const colorWatch = (priority) => {
         if (priority == 'Low Priority') {
-            return "list-group-item-success"
+            return "list-group-item-success greenColor"
         } else {
             if (priority == 'Medium Priority') {
-                return "list-group-item-warning"
+                return "list-group-item-warning yellowColor"
             } else {
                 if (priority == 'High Priority') {
-                    return "list-group-item-danger"
+                    return "list-group-item-danger redColor"
             }
             }
     } 
@@ -20,7 +20,7 @@ function ListPanel(props) {
     return (
         <div>        
             <ul className="list-group">
-                <li className={ `list-group-item 
+                <li className={ `list-group-item list-group-item-action
                 ${colorWatch(props.priority)} boldText`} style={{
                     textDecoration: props.completed
                       ? "line-through"

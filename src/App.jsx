@@ -84,14 +84,13 @@ delete (key) {
 
 
 save (title, priority, key) {  
-  console.log(title)
   let tempList = this.state.listofTodos
   
   tempList.forEach((item) => {
     if (key==item.key) {
       item.newTodo = title;
       item.priority = priority;
-      item.isBeingEdited = false;
+      item.isBeingEdited = false; 
     }
     this.setState ({
       listofTodos: tempList
